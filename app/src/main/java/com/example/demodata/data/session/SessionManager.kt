@@ -34,6 +34,13 @@ class SessionManager(private val context: Context) {
     suspend fun setDarkMode(enabled: Boolean) {
         context.sessionDataStore.edit { it[KEY_DARK_MODE] = enabled }
     }
+    suspend fun login(username: String) {
+        context.sessionDataStore.edit { prefs ->
+            prefs[KEY_IS_LOGGED_IN] = true
+            prefs[KEY_USERNAME]     = username
+        }
+    }
+
 
     suspend fun logout() {
         context.sessionDataStore.edit { prefs ->
