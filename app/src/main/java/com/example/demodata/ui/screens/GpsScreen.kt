@@ -27,6 +27,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun GpsScreen(viewModel: GpsViewModel) {

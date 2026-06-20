@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import androidx.lifecycle.ViewModelProvider
 
-// Modelo de datos comparativo para unir ambas capturas
+// Estructura intermedia para emparejar ambos registros en un mismo instante
 data class ComparativeGpsRecord(
     val timestamp: Long,
     val google: GpsGoogleEntity?,
@@ -23,10 +24,12 @@ class GpsViewModel(private val gpsRepository: GpsRepository) : ViewModel() {
     val googlePoints = gpsRepository.googlePoints.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList()
     )
+
     val sensorsPoints = gpsRepository.sensorsPoints.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList()
     )
 
+    // Combina ambos canales asíncronos en una sola lista unificada
     val comparativeHistory = combine(
         gpsRepository.googlePoints,
         gpsRepository.sensorsPoints
@@ -38,11 +41,20 @@ class GpsViewModel(private val gpsRepository: GpsRepository) : ViewModel() {
         allTimestamps.map { ts ->
             ComparativeGpsRecord(
                 timestamp = ts,
-                google = gList.find { it.timestamp == ts },
+                google  = gList.find { it.timestamp == ts },
                 sensors = sList.find { it.timestamp == ts }
             )
         }
     }
-        .flowOn(Dispatchers.Default)   // cálculo pesado fuera del hilo principal
+        .flowOn(Dispatchers.Default)   // Envía el cálculo pesado fuera del hilo de la UI
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    companion object {
+        fun Factory(gpsRepository: GpsRepository): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return GpsViewModel(gpsRepository) as T
+                }
+            }
+    }
 }

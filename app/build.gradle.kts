@@ -87,4 +87,5 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
     // ── Accompanist: gestión de permisos en runtime con Compose ──
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }

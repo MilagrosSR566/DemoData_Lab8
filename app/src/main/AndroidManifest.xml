@@ -2,11 +2,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ── Hardware de posicionamiento ── -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- ── Hardware inalámbrico complementario ── -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- ── Periféricos de captura multimedia ── -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- ── Servicio en primer plano + notificaciones (Android 13+) ── -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- ── Conectividad de red para HTTP POST ── -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ── Declaración explícita de hardware ── -->
+    <uses-feature android:name="android.hardware.camera"            android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus"  android:required="false" />
+    <uses-feature android:name="android.hardware.microphone"        android:required="false" />
+    <uses-feature android:name="android.hardware.location"          android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps"      android:required="false" />
+    <uses-feature android:name="android.hardware.bluetooth_le"      android:required="false" />
+    <uses-feature android:name="android.hardware.wifi"              android:required="false" />
 
     <application
         android:name=".DemoDataApp"
@@ -19,6 +46,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DemoData">
 
+        <service
+            android:name=".services.GpsCaptureService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,11 +62,15 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".services.GpsCaptureService"
-            android:enabled="true"
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:foregroundServiceType="location" />
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 
