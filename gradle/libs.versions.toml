@@ -10,6 +10,9 @@ kotlin = "2.2.10"
 ksp          = "2.2.10-2.0.2"   # debe coincidir exactamente con la versión de Kotlin
 androidxRoom = "2.7.0-alpha11"
 composeBom = "2026.02.01"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+kotlinxSerializationJson = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,6 +32,10 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-room-runtime  = { group = "androidx.room", name = "room-runtime",  version.ref = "androidxRoom" }
 androidx-room-ktx      = { group = "androidx.room", name = "room-ktx",      version.ref = "androidxRoom" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler",  version.ref = "androidxRoom" }
+retrofit-core = { group = "com.squareup.retrofit2",           name = "retrofit",                          version.ref = "retrofit" }
+retrofit-kotlin-serialization   = { group = "com.squareup.retrofit2",           name = "converter-kotlinx-serialization",   version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3",             name = "logging-interceptor",               version.ref = "okhttp" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx",            name = "kotlinx-serialization-json",        version.ref = "kotlinxSerializationJson" }
 
 
 [plugins]
