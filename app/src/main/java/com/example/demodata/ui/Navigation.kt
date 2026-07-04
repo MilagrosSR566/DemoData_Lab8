@@ -55,6 +55,7 @@ fun Navigation() {
             composable("login") {
                 LoginScreen(
                     onSubmit           = sessionVm::login,
+                    onGoogleLogin = sessionVm::loginWithGoogle,
                     onRegisterNavigate = { rootNavController.navigate("register") }
                 )
             }
